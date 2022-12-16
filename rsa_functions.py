@@ -13,6 +13,25 @@ class RSA:
         self.private_key: Tuple[int, int] = private_key
 
     @staticmethod
+    def _generate(p: int, q: int) -> RSA:
+        n = p * q
+
+        fi_n = (p - 1) * (q - 1)
+        e = fi_n
+        # make sure that e ∈ Uφ(N)
+        while number_theory_functions.extended_gcd(e, fi_n) != 1:
+            # 2 <= e <= fi_n
+            e = random.randint(2, fi_n)
+        d = number_theory_functions.modular_inverse(e, fi_n)
+        return RSA(public_key=(n, e), private_key=(n, d))
+
+    @staticmethod
+    def generate_from_primes(p: int, q: int) -> RSA:
+        if not (number_theory_functions.is_prime(q) and number_theory_functions.is_prime(q)):
+            raise Exception(f"p ({p}) or q ({q}) are not prime!")
+        return RSA._generate(p=p, q=q)
+
+    @staticmethod
     def generate(digits: int = 10) -> RSA:
         """
         Creates an RSA encryption system object
@@ -31,16 +50,8 @@ class RSA:
         q = number_theory_functions.generate_prime(digits)
         if q is None or p is None:
             raise Exception("Failed to generate primes")
-        n = p * q
+        return RSA._generate(p=p, q=q)
 
-        fi_n = (p - 1) * (q - 1)
-        e = fi_n
-        # make sure that e ∈ Uφ(N)
-        while number_theory_functions.extended_gcd(e, fi_n) != 1:
-            # 2 <= e <= fi_n
-            e = random.randint(2, fi_n)
-        d = number_theory_functions.modular_inverse(e, fi_n)
-        return RSA(public_key=(n, e), private_key=(n, d))
 
     def encrypt(self, m: List[int]) -> List[int]:
         """
