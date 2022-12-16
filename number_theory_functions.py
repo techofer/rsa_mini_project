@@ -71,19 +71,14 @@ def modular_exponent(a: int, d: int, n: int) -> int:
     binary_d = list(binary_str_d[2:])
     counter = 0
     multi = 1
-    a_mod_n = a % n
     temp = a % n
-    twopow =1
     while len(binary_d) > counter:
-        #power = int(binary_d[-(counter+1)]) * (twopow)
         multi *= temp**(int(binary_d[-(counter+1)])) % n
-        #multi *= (a_mod_n ** power) % n
         multi = multi % n
         temp = temp**2 % n
         counter += 1
-        twopow *= 2
-    multi = multi % n
-    return multi
+
+    return multi % n
 
 
 
