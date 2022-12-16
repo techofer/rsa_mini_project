@@ -8,7 +8,9 @@ def riddle5():
 
     message = [ord(c) for c in "Hello world!"]
     encrypted = rsa.encrypt(message)
-    print(f"original message: {message}, encrypted message: {encrypted}, public key: {rsa.public_key}")
+    print(
+        f"original message: {message}, encrypted message: {encrypted}, public key: {rsa.public_key}"
+    )
 
 
 if __name__ == "__main__":
