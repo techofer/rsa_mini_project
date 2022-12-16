@@ -48,7 +48,7 @@ def modular_inverse(a: int, n: int) -> Optional[int]:
     """
     d, x, y = extended_gcd(a, n)
     if d == 1:
-        return x
+        return x % n
     else:
         return None
 
@@ -68,16 +68,20 @@ def modular_exponent(a: int, d: int, n: int) -> int:
     b: such that b == (a**d) % n
     """
     binary_str_d = bin(d)
-    binary_d = int(binary_str_d[2:])
+    binary_d = list(binary_str_d[2:])
     counter = 0
     multi = 1
     a_mod_n = a % n
-    while binary_d:
-        power = binary_d % 10 * 2 ** counter
-        multi *= (a_mod_n ** power) % n
+    temp = a % n
+    twopow =1
+    while len(binary_d) > counter:
+        #power = int(binary_d[-(counter+1)]) * (twopow)
+        multi *= temp**(int(binary_d[-(counter+1)])) % n
+        #multi *= (a_mod_n ** power) % n
         multi = multi % n
+        temp = temp**2 % n
         counter += 1
-        binary_d = binary_d // 10
+        twopow *= 2
     multi = multi % n
     return multi
 
