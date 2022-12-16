@@ -1,6 +1,7 @@
 from random import randrange
 
-def extended_gcd(a,b):
+
+def extended_gcd(a, b):
     """
     Returns the extended gcd of a and b
 
@@ -14,8 +15,7 @@ def extended_gcd(a,b):
     """
 
 
-
-def modular_inverse(a,n):
+def modular_inverse(a, n):
     """
     Returns the inverse of a modulo n if one exists
 
@@ -44,6 +44,20 @@ def modular_exponent(a, d, n):
     -------
     b: such that b == (a**d) % n
     """
+    binary_str_d = bin(d)
+    binary_d = int(binary_str_d[2:])
+    counter = 0
+    multi = 1
+    a_mod_n = a % n
+    while binary_d:
+        power = binary_d % 10 * 2 ** counter
+        multi *= (a_mod_n ** power) % n
+        multi = multi % n
+        counter += 1
+        binary_d = binary_d // 10
+    multi = multi % n
+    return multi
+
 
 def miller_rabin(n):
     """
@@ -58,22 +72,23 @@ def miller_rabin(n):
     b: If n is prime, b is guaranteed to be True.
     If n is not a prime, b has a 3/4 chance at least to be False
     """
-    a = randrange(1,n)
+    a = randrange(1, n)
     k = 0
-    d = n-1
+    d = n - 1
     while d % 2 == 0:
         k = k + 1
         d = d // 2
     x = modular_exponent(a, d, n)
-    if x == 1 or x == n-1:
+    if x == 1 or x == n - 1:
         return True
     for _ in range(k):
         x = (x * x) % n
         if x == 1:
             return False
-        if x == n-1:
+        if x == n - 1:
             return True
     return False
+
 
 def is_prime(n):
     """
@@ -93,9 +108,15 @@ def is_prime(n):
             return False
     return True
 
+
 def generate_prime(digits):
     for i in range(digits * 10):
-        n = randrange(10**(digits-1), 10**digits)
+        n = randrange(10 ** (digits - 1), 10 ** digits)
         if is_prime(n):
             return n
     return None
+
+
+if __name__ == '__main__':
+    print(modular_exponent(37862,354,6))
+    print(pow(37862,354,6))
