@@ -73,13 +73,12 @@ def modular_exponent(a: int, d: int, n: int) -> int:
     multi = 1
     temp = a % n
     while len(binary_d) > counter:
-        multi *= temp**(int(binary_d[-(counter+1)])) % n
+        multi *= temp ** (int(binary_d[-(counter + 1)])) % n
         multi = multi % n
         temp = temp**2 % n
         counter += 1
 
     return multi % n
-
 
 
 def miller_rabin(n: int) -> bool:

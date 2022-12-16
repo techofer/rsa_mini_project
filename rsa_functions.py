@@ -1,7 +1,7 @@
 from __future__ import annotations
 import random
 
-from typing import Optional, Tuple, List
+from typing import Optional, Tuple
 import number_theory_functions
 
 
