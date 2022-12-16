@@ -8,4 +8,3 @@ if extended_gcd(11, N)[0] == 1:
 
 # x^(ed) % N = x
 # ed = 990 * k + 1
-
