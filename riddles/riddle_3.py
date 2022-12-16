@@ -20,7 +20,7 @@ def riddle3():
     rsa = RSA(public_key=public_key, private_key=private_key)
 
     decrypted = rsa.decrypt(encrypted)
-    print(f"pirvate key: {private_key}, decrypted: {decrypted}")
+    print(f"private key: {private_key}, decrypted: {decrypted}")
 
 
 if __name__ == "__main__":
