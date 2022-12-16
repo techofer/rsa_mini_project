@@ -1,7 +1,8 @@
 from __future__ import annotations
-import random
 
+import random
 from typing import Optional, Tuple
+
 import number_theory_functions
 
 
@@ -10,7 +11,7 @@ class RSA:
         self, public_key: Tuple[int, int], private_key: Optional[Tuple[int, int]] = None
     ):
         self.public_key: Tuple[int, int] = public_key
-        self.private_key: Tuple[int, int] = private_key
+        self.private_key: Optional[Tuple[int, int]] = private_key
 
     @staticmethod
     def _generate(p: int, q: int) -> RSA:
@@ -23,6 +24,8 @@ class RSA:
             # 2 <= e <= fi_n
             e = random.randint(2, fi_n)
         d = number_theory_functions.modular_inverse(e, fi_n)
+        if d is None:
+            raise Exception(f"Failed to inverse {e}")
         return RSA(public_key=(n, e), private_key=(n, d))
 
     @staticmethod
@@ -48,10 +51,20 @@ class RSA:
         * The public key (N,e)
         * The private key (N,d)
         """
-        p = number_theory_functions.generate_prime(digits)
-        q = number_theory_functions.generate_prime(digits)
-        if q is None or p is None:
-            raise Exception("Failed to generate primes")
+        n = 0
+        p = 0
+        q = 0
+
+        while len(str(n)) != digits:
+            p_digits = random.randint(1, digits)
+            q_digits = digits - p_digits
+            p = number_theory_functions.generate_prime(p_digits)
+            q = number_theory_functions.generate_prime(q_digits)
+            if q is None or p is None:
+                continue
+
+            n = p * q
+
         return RSA._generate(p=p, q=q)
 
     def encrypt(self, m: int) -> int:
@@ -82,6 +95,8 @@ class RSA:
         -------
         m : The decrypted plaintext
         """
+        if self.private_key is None:
+            raise Exception("private key not provided")
         return number_theory_functions.modular_exponent(
             c, d=self.private_key[1], n=self.private_key[0]
         )
