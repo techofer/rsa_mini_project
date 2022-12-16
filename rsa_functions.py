@@ -1,12 +1,19 @@
+from __future__ import annotations
+import random
+
+from typing import Optional, Tuple, List
 import number_theory_functions
 
-class RSA():
-    def __init__(self, public_key, private_key = None):
-        self.public_key = public_key
-        self.private_key = private_key
+
+class RSA:
+    def __init__(
+        self, public_key: Tuple[int, int], private_key: Optional[Tuple[int, int]] = None
+    ):
+        self.public_key: Tuple[int, int] = public_key
+        self.private_key: Tuple[int, int] = private_key
 
     @staticmethod
-    def generate(digits = 10):
+    def generate(digits: int = 10) -> RSA:
         """
         Creates an RSA encryption system object
 
@@ -20,9 +27,22 @@ class RSA():
         * The public key (N,e)
         * The private key (N,d)
         """
+        p = number_theory_functions.generate_prime(digits)
+        q = number_theory_functions.generate_prime(digits)
+        if q is None or p is None:
+            raise Exception("Failed to generate primes")
+        n = p * q
 
+        fi_n = (p - 1) * (q - 1)
+        e = fi_n
+        # make sure that e ∈ Uφ(N)
+        while number_theory_functions.extended_gcd(e, fi_n) != 1:
+            # 2 <= e <= fi_n
+            e = random.randint(2, fi_n)
+        d = number_theory_functions.modular_inverse(e, fi_n)
+        return RSA(public_key=(n, e), private_key=(n, d))
 
-    def encrypt(self, m):
+    def encrypt(self, m: List[int]) -> List[int]:
         """
         Encrypts the plaintext m using the RSA system
 
@@ -34,9 +54,9 @@ class RSA():
         -------
         c : The encrypted ciphertext
         """
+        return [number_theory_functions.modular_exponent(c, d=self.public_key[1], n=self.public_key[0]) for c in m]
 
-
-    def decrypt(self, c):
+    def decrypt(self, c: List[int]) -> List[int]:
         """
         Decrypts the ciphertext c using the RSA system
 
@@ -47,4 +67,5 @@ class RSA():
         Returns
         -------
         m : The decrypted plaintext
-       """
+        """
+        return [number_theory_functions.modular_exponent(c, d=self.private_key[1], n=self.private_key[0]) for c in c]

@@ -1,7 +1,7 @@
 from random import randrange
 
 
-def extended_gcd(a, b):
+def extended_gcd(a: int, b: int):
     """
     Returns the extended gcd of a and b
 
@@ -13,6 +13,23 @@ def extended_gcd(a, b):
     -------
     (d, x, y): d = gcd(a,b) = a*x + b*y
     """
+
+    if a > b:
+        q = a // b
+        r = a % b
+
+        if r == 0:
+            return b, 0, 1
+
+        d, x, y = extended_gcd(b, r)
+
+        return d, y, x - y*q
+
+    elif b > a:
+        d, x, y = extended_gcd(b, a)
+        return d, y, x
+    else:
+        return a, 1, 0
 
 
 def modular_inverse(a, n):
@@ -28,6 +45,11 @@ def modular_inverse(a, n):
     -------
     x: such that (a*x % n) == 1 and 0 <= x < n if one exists, else None
     """
+    d, x, y = extended_gcd(a, n)
+    if d == 1:
+        return x
+    else:
+        return None
 
 
 def modular_exponent(a, d, n):
@@ -57,6 +79,7 @@ def modular_exponent(a, d, n):
         binary_d = binary_d // 10
     multi = multi % n
     return multi
+
 
 
 def miller_rabin(n):
@@ -116,7 +139,5 @@ def generate_prime(digits):
             return n
     return None
 
-
-if __name__ == '__main__':
-    print(modular_exponent(37862,354,6))
-    print(pow(37862,354,6))
+if __name__ == "__main__":
+    print(modular_inverse(8, 143))
