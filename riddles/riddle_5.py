@@ -7,8 +7,10 @@ def riddle5():
     rsa = RSA.generate_from_primes(p=p, q=q)
 
     message = [ord(c) for c in "Hello world!"]
-    encrypted = rsa.encrypt(message)
-    print(f"original message: {message}, encrypted message: {encrypted}, public key: {rsa.public_key}")
+    encrypted = [rsa.encrypt(c) for c in message]
+    print(
+        f"original message: {message}, encrypted message: {encrypted}, public key: {rsa.public_key}"
+    )
 
 
 if __name__ == "__main__":
