@@ -1,7 +1,8 @@
+from typing import Tuple, Optional
 from random import randrange
 
 
-def extended_gcd(a: int, b: int):
+def extended_gcd(a: int, b: int) -> Tuple[int, int, int]:
     """
     Returns the extended gcd of a and b
 
@@ -23,7 +24,7 @@ def extended_gcd(a: int, b: int):
 
         d, x, y = extended_gcd(b, r)
 
-        return d, y, x - y*q
+        return d, y, x - y * q
 
     elif b > a:
         d, x, y = extended_gcd(b, a)
@@ -32,7 +33,7 @@ def extended_gcd(a: int, b: int):
         return a, 1, 0
 
 
-def modular_inverse(a, n):
+def modular_inverse(a: int, n: int) -> Optional[int]:
     """
     Returns the inverse of a modulo n if one exists
 
@@ -52,7 +53,7 @@ def modular_inverse(a, n):
         return None
 
 
-def modular_exponent(a, d, n):
+def modular_exponent(a: int, d: int, n: int) -> int:
     """
     Returns a to the power of d modulo n
 
@@ -68,7 +69,7 @@ def modular_exponent(a, d, n):
     """
 
 
-def miller_rabin(n):
+def miller_rabin(n: int) -> bool:
     """
     Checks the primality of n using the Miller-Rabin test
 
@@ -99,7 +100,7 @@ def miller_rabin(n):
     return False
 
 
-def is_prime(n):
+def is_prime(n: int) -> bool:
     """
     Checks the primality of n
 
@@ -118,12 +119,13 @@ def is_prime(n):
     return True
 
 
-def generate_prime(digits):
+def generate_prime(digits: int) -> Optional[int]:
     for i in range(digits * 10):
-        n = randrange(10 ** (digits - 1), 10 ** digits)
+        n = randrange(10 ** (digits - 1), 10**digits)
         if is_prime(n):
             return n
     return None
+
 
 if __name__ == "__main__":
     print(modular_inverse(8, 143))
