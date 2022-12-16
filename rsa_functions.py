@@ -1,7 +1,7 @@
 from __future__ import annotations
 import random
 
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List
 import number_theory_functions
 
 
@@ -29,6 +29,8 @@ class RSA:
         """
         p = number_theory_functions.generate_prime(digits)
         q = number_theory_functions.generate_prime(digits)
+        if q is None or p is None:
+            raise Exception("Failed to generate primes")
         n = p * q
 
         fi_n = (p - 1) * (q - 1)
@@ -40,7 +42,7 @@ class RSA:
         d = number_theory_functions.modular_inverse(e, fi_n)
         return RSA(public_key=(n, e), private_key=(n, d))
 
-    def encrypt(self, m: str) -> str:
+    def encrypt(self, m: List[int]) -> List[int]:
         """
         Encrypts the plaintext m using the RSA system
 
@@ -52,14 +54,9 @@ class RSA:
         -------
         c : The encrypted ciphertext
         """
-        return "".join(
-            [
-                chr(number_theory_functions.modular_exponent(ord(c), *self.public_key))
-                for c in m
-            ]
-        )
+        return [number_theory_functions.modular_exponent(c, d=self.public_key[1], n=self.public_key[0]) for c in m]
 
-    def decrypt(self, c: str) -> str:
+    def decrypt(self, c: List[int]) -> List[int]:
         """
         Decrypts the ciphertext c using the RSA system
 
@@ -71,9 +68,4 @@ class RSA:
         -------
         m : The decrypted plaintext
         """
-        return "".join(
-            [
-                chr(number_theory_functions.modular_exponent(ord(c), *self.private_key))
-                for c in c
-            ]
-        )
+        return [number_theory_functions.modular_exponent(c, d=self.private_key[1], n=self.private_key[0]) for c in c]
