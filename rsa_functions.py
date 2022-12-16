@@ -19,7 +19,7 @@ class RSA:
         fi_n = (p - 1) * (q - 1)
         e = fi_n
         # make sure that e ∈ Uφ(N)
-        while number_theory_functions.extended_gcd(e, fi_n) != 1:
+        while number_theory_functions.extended_gcd(e, fi_n)[0] != 1:
             # 2 <= e <= fi_n
             e = random.randint(2, fi_n)
         d = number_theory_functions.modular_inverse(e, fi_n)
