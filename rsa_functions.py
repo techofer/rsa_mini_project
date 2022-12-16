@@ -53,7 +53,7 @@ class RSA:
         return RSA._generate(p=p, q=q)
 
 
-    def encrypt(self, m: List[int]) -> List[int]:
+    def encrypt(self, m: int) -> int:
         """
         Encrypts the plaintext m using the RSA system
 
@@ -65,14 +65,9 @@ class RSA:
         -------
         c : The encrypted ciphertext
         """
-        return [
-            number_theory_functions.modular_exponent(
-                c, d=self.public_key[1], n=self.public_key[0]
-            )
-            for c in m
-        ]
+        return number_theory_functions.modular_exponent(m, d=self.public_key[1], n=self.public_key[0])
 
-    def decrypt(self, c: List[int]) -> List[int]:
+    def decrypt(self, c: int) -> int:
         """
         Decrypts the ciphertext c using the RSA system
 
@@ -84,9 +79,4 @@ class RSA:
         -------
         m : The decrypted plaintext
         """
-        return [
-            number_theory_functions.modular_exponent(
-                c, d=self.private_key[1], n=self.private_key[0]
-            )
-            for c in c
-        ]
+        return number_theory_functions.modular_exponent(c, d=self.private_key[1], n=self.private_key[0])
