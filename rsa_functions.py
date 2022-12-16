@@ -27,7 +27,9 @@ class RSA:
 
     @staticmethod
     def generate_from_primes(p: int, q: int) -> RSA:
-        if not (number_theory_functions.is_prime(q) and number_theory_functions.is_prime(q)):
+        if not (
+            number_theory_functions.is_prime(q) and number_theory_functions.is_prime(q)
+        ):
             raise Exception(f"p ({p}) or q ({q}) are not prime!")
         return RSA._generate(p=p, q=q)
 
@@ -52,7 +54,6 @@ class RSA:
             raise Exception("Failed to generate primes")
         return RSA._generate(p=p, q=q)
 
-
     def encrypt(self, m: int) -> int:
         """
         Encrypts the plaintext m using the RSA system
@@ -65,7 +66,9 @@ class RSA:
         -------
         c : The encrypted ciphertext
         """
-        return number_theory_functions.modular_exponent(m, d=self.public_key[1], n=self.public_key[0])
+        return number_theory_functions.modular_exponent(
+            m, d=self.public_key[1], n=self.public_key[0]
+        )
 
     def decrypt(self, c: int) -> int:
         """
@@ -79,4 +82,6 @@ class RSA:
         -------
         m : The decrypted plaintext
         """
-        return number_theory_functions.modular_exponent(c, d=self.private_key[1], n=self.private_key[0])
+        return number_theory_functions.modular_exponent(
+            c, d=self.private_key[1], n=self.private_key[0]
+        )
