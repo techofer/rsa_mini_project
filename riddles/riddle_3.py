@@ -7,9 +7,8 @@ def riddle3():
     e = 3499
 
     public_key = (n, e)
-    rsa = RSA(public_key=public_key, private_key=None)
 
-    encrypted = rsa.encrypt(42)
+    encrypted = 42
 
     # according to https://davidson-web2.weizmann.ac.il/davidson1/applets/factor.htm : 12215009 = 3491 * 3499
     p = 3491

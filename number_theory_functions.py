@@ -1,5 +1,5 @@
-from typing import Tuple, Optional
 from random import randrange
+from typing import Optional, Tuple
 
 
 def extended_gcd(a: int, b: int) -> Tuple[int, int, int]:
